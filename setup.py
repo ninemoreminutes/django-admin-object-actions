@@ -19,7 +19,8 @@ setup(
     version=__version__,
     author='Nine More Minutes, Inc.',
     author_email='support@ninemoreminutes.com',
-    description='Django middleware to capture current request and user.',
+    description='Library to support object-level actions in the Django admin '
+                'interface.',
     long_description=open(os.path.join(os.path.dirname(__file__), 'README.rst'),
                           'rb').read().decode('utf-8'),
     license='BSD',
