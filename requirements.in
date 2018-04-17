@@ -1,0 +1,16 @@
+bumpversion
+django
+django-crum
+django-debug-toolbar
+django-extensions
+flake8
+ipython
+pep8
+pip-tools
+pytest
+pytest-cov
+pytest-django
+pytest-flake8
+pytest-runner
+sphinx
+tox
