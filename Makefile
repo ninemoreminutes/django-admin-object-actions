@@ -80,4 +80,4 @@ docs: requirements
 
 .PHONY: ship-it
 ship-it: requirements clean-pyc
-	python setup.py release_build register upload upload_docs
+	python setup.py ship_it

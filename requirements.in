@@ -5,8 +5,8 @@ django-debug-toolbar
 django-extensions
 flake8
 ipython
-pep8
 pip-tools
+pycodestyle
 pytest
 pytest-cov
 pytest-django
@@ -14,3 +14,5 @@ pytest-flake8
 pytest-runner
 sphinx
 tox
+twine
+wheel

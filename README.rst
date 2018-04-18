@@ -1,4 +1,4 @@
-|Build Status| |PyPI Version| |PyPI License| |Python Versions|
+|Build Status| |PyPI Version| |PyPI License| |Python Versions| |Django Versions| |Read the Docs|
 
 Django-Admin-Object-Actions
 ===========================
@@ -23,8 +23,12 @@ It is tested against:
 .. |Build Status| image:: http://img.shields.io/travis/ninemoreminutes/django-admin-object-actions.svg
    :target: https://travis-ci.org/ninemoreminutes/django-admin-object-actions
 .. |PyPI Version| image:: https://img.shields.io/pypi/v/django-admin-object-actions.svg
-   :target: https://pypi.python.org/pypi/django-admin-object-actions/
+   :target: https://pypi.org/project/django-admin-object-actions/
 .. |PyPI License| image:: https://img.shields.io/pypi/l/django-admin-object-actions.svg
-   :target: https://pypi.python.org/pypi/django-admin-object-actions/
+   :target: https://pypi.org/project/django-admin-object-actions/
 .. |Python Versions| image:: https://img.shields.io/pypi/pyversions/django-admin-object-actions.svg
-   :target: https://pypi.python.org/pypi/django-admin-object-actions/
+   :target: https://pypi.org/project/django-admin-object-actions/
+.. |Django Versions| image:: https://img.shields.io/pypi/djversions/django-admin-object-actions.svg
+   :target: https://pypi.org/project/django-admin-object-actions/
+.. |Read the Docs| image:: https://img.shields.io/readthedocs/django-admin-object-actions.svg
+   :target: http://django-admin-object-actions.readthedocs.io/
