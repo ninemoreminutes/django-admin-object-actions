@@ -1,5 +1,5 @@
 language: python
-python: 3.7
+python: '3.7'
 sudo: required
 dist: xenial
 install: make requirements
@@ -8,7 +8,7 @@ script: make tox
 addons:
   apt:
     sources:
-      - ppa:deadsnakes/ppa
+      - sourceline: ppa:deadsnakes/ppa
     packages:
       - python3.4
       - python3.6
