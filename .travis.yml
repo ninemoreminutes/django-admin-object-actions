@@ -9,3 +9,4 @@ addons:
       - deadsnakes
     packages:
       - python3.5
+      - python3.7
