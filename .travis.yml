@@ -8,7 +8,7 @@ script: make tox
 addons:
   apt:
     sources:
-      - deadsnakes
+      - ppa:deadsnakes/ppa
     packages:
       - python3.4
       - python3.6
