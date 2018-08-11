@@ -1,3 +1,5 @@
+# Development environment uses Python 3.5.
+
 bumpversion
 django
 django-crum

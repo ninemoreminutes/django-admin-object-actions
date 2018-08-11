@@ -35,16 +35,19 @@ runserver: migrate
 reports:
 	mkdir -p $@
 
-.PHONY: pep8
-pep8: reports requirements
+.PHONY: pycodestyle
+pycodestyle: reports requirements
 	set -o pipefail && $@ | tee reports/$@.report
+
+.PHONY: pep8
+pep8: pycodestyle
 
 .PHONY: flake8
 flake8: reports requirements
 	set -o pipefail && $@ | tee reports/$@.report
 
 .PHONY: check8
-check8: pep8 flake8
+check8: pycodestyle flake8
 
 .PHONY: test
 test: clean-pyc
