@@ -159,7 +159,7 @@ class ModelAdminObjectActionsMixin(object):
             wrapped_view = functools.update_wrapper(wrapped_view, view)
             object_action_urls.append(
                 re_path(
-                    r'^(?P<object_id>\d+)/{}/$'.format(action),
+                    r'^(?P<object_id>\S+)/{}/$'.format(action),
                     self.admin_site.admin_view(wrapped_view),
                     name=self.get_object_action_view_name(action),
                 )
