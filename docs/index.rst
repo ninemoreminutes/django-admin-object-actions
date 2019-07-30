@@ -102,7 +102,7 @@ the following::
     from .forms import MyActionForm
 
     class MyModelAdmin(ModelAdminObjectActionsMixin, admin.ModelAdmin):
-        
+
         object_actions = [
             {
                 'slug': 'myaction',
@@ -189,6 +189,20 @@ may define additional fields customize the action's behavior:
 
 Additional methods of the ``ModelAdminObjectActionsMixin`` class may be
 overridden to further customize the behavior of object actions.
+
+To customize the column header in the change list view or the field label in the
+change view, override the ``display_object_actions_list`` or
+``display_object_actions_detail`` methods as shown below::
+
+    class MyModelAdmin(ModelAdminObjectActionsMixin, admin.ModelAdmin):
+
+        def display_object_actions_list(self, obj=None):
+            return self.display_object_actions(obj, list_only=True)
+        display_object_actions_list.short_description = _('My Actions')
+
+        def display_object_actions_detail(self, obj=None):
+            return self.display_object_actions(obj, detail_only=True)
+        display_object_actions_detail.short_description = _('My Actions')
 
 See ``test_project/test_app/admin.py`` in the project repository for additional
 usage examples.
