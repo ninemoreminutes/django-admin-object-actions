@@ -1,3 +1,5 @@
+# -*- coding: UTF-8 -*-
+
 # Django
 from django.contrib import admin
 from django.utils.timezone import now
@@ -38,8 +40,8 @@ class TestModelAdmin(ModelAdminObjectActionsMixin, admin.ModelAdmin):
     object_actions = [
         {
             'slug': 'enable',
-            'verbose_name': _('enable'),
-            'verbose_name_past': _('enabled'),
+            'verbose_name': _(u'enable ✓'),
+            'verbose_name_past': _(u'enabled ✓'),
             'form_class': AdminTestModelEnableForm,
             'fields': ('name', 'enabled', 'confirm'),
             'readonly_fields': ('name', 'enabled',),

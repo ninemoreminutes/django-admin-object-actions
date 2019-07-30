@@ -119,7 +119,7 @@ class ModelAdminObjectActionsMixin(object):
         view_name = self.get_object_action_view_name(action)
         href = reverse('admin:{}'.format(view_name), args=[obj.pk], current_app=self.admin_site.name)
         next_url = request.get_full_path()
-        return format_html('<a class="button" href="{}?next={}">{}</a>', href, next_url, verbose_name)
+        return format_html(u'<a class="button" href="{}?next={}">{}</a>', href, next_url, verbose_name)
 
     def display_object_actions(self, obj=None, list_only=False, detail_only=False):
         empty_value_display = self.get_empty_value_display()
@@ -136,7 +136,7 @@ class ModelAdminObjectActionsMixin(object):
             if not self.has_object_action_permission(request, obj, action):
                 continue
             actions_display.append(self.get_object_action_display(request, obj, action))
-        return format_html_join(mark_safe('&nbsp;'), '{}', [(x,) for x in actions_display])
+        return format_html_join(mark_safe('&nbsp;'), u'{}', [(x,) for x in actions_display])
     display_object_actions.short_description = _('Object Actions')
 
     def display_object_actions_list(self, obj=None):
@@ -180,7 +180,7 @@ class ModelAdminObjectActionsMixin(object):
     def construct_object_action_message(self, request, obj, form, action):
         verbose_name = self.get_object_action_verbose_name(request, obj, action)
         verbose_name_past = self.get_object_action_option(action, 'verbose_name_past', None) or verbose_name
-        return '{}.'.format(verbose_name_past[0].upper() + verbose_name_past[1:])
+        return u'{}.'.format(verbose_name_past[0].upper() + verbose_name_past[1:])
 
     def log_object_action(self, request, obj, message, action):
         return self.log_change(request, obj, message)
@@ -262,7 +262,7 @@ class ModelAdminObjectActionsMixin(object):
 
         verbose_name = self.get_object_action_verbose_name(request, obj, action)
         verbose_name_title = self.get_object_action_verbose_name_title(request, obj, action)
-        title = '{} {}'.format(verbose_name_title[0].upper() + verbose_name_title[1:], opts.verbose_name)
+        title = u'{} {}'.format(verbose_name_title[0].upper() + verbose_name_title[1:], opts.verbose_name)
         return dict(
             self.admin_site.each_context(request),
             title=title,
