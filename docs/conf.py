@@ -20,7 +20,7 @@
 # -- Project information -----------------------------------------------------
 
 project = 'Django-Admin-Object-Actions'
-copyright = '2018, Nine More Minutes, Inc.'
+copyright = '2019, Nine More Minutes, Inc.'
 author = 'Nine More Minutes, Inc.'
 
 # The short X.Y version
