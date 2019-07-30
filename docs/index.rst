@@ -46,7 +46,10 @@ Usage
 -----
 
 Ensure your ``ModelAdmin`` class inherits from the
-``ModelAdminObjectActionsMixin``::
+``ModelAdminObjectActionsMixin``. It should also include ``display_object_actions_list``
+in the ``list_display`` attribute and ``display_object_actions_detail`` in the
+``fields`` and ``readonly_fields`` attributes to ensure the object action buttons
+show up in the change list and change views, respectively::
 
     # myapp/admin.py
     from django.contrib import admin
@@ -55,7 +58,24 @@ Ensure your ``ModelAdmin`` class inherits from the
     
     @admin.register(MyModel)
     class MyModelAdmin(ModelAdminObjectActionsMixin, admin.ModelAdmin):
-        pass
+
+        list_display = (
+            ...,  # your existing list display fields
+            'display_object_actions_list',
+        )
+
+        fields = (
+            ...,  # your existing detail display fields
+            'display_object_actions_detail',
+        )
+        
+        readonly_fields = (
+            ...,  # your existing read-only fields
+            'display_object_actions_detail',
+        )
+
+If using ``fieldsets`` instead of ``fields``, add ``display_object_actions_detail``
+to the desired fieldset as you would with any other field.
 
 Create custom subclasses of ``AdminObjectActionForm`` for actions requiring
 additional input or confirmation and implement the ``do_object_action`` method::
@@ -76,7 +96,8 @@ additional input or confirmation and implement the ``do_object_action`` method::
         def do_object_action(self):
             self.instance.action()
 
-Define ``object_actions`` on your ``ModelAdmin`` class similar to the following::
+Define an ``object_actions`` dictionary on your ``ModelAdmin`` class similar to
+the following::
 
     from .forms import MyActionForm
 
@@ -168,3 +189,6 @@ may define additional fields customize the action's behavior:
 
 Additional methods of the ``ModelAdminObjectActionsMixin`` class may be
 overridden to further customize the behavior of object actions.
+
+See ``test_project/test_app/admin.py`` in the project repository for additional
+usage examples.
