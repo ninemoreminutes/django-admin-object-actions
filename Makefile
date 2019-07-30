@@ -49,8 +49,12 @@ flake8: reports requirements
 .PHONY: check8
 check8: pycodestyle flake8
 
+.PHONY: clean-coverage
+clean-coverage:
+	rm -f .coverage
+
 .PHONY: test
-test: clean-pyc
+test: clean-pyc clean-coverage
 	python setup.py test
 
 .PHONY: clean-tox
@@ -62,7 +66,7 @@ tox: clean-pyc
 	tox
 
 .PHONY: clean-all
-clean-all: clean-pyc clean-tox
+clean-all: clean-pyc clean-coverage clean-tox
 	rm -rf *.egg-info .eggs .cache .coverage build reports
 
 .PHONY: bump-major
@@ -81,6 +85,14 @@ bump-patch: requirements
 docs: requirements
 	python setup.py build_sphinx
 
+.PHONY: dev-build
+dev-build: requirements clean-pyc clean-coverage
+	python setup.py dev_build
+
+.PHONY: release-build
+release-build: requirements clean-pyc clean-coverage
+	python setup.py release_build
+
 .PHONY: ship-it
-ship-it: requirements clean-pyc
+ship-it: requirements clean-pyc clean-coverage
 	python setup.py ship_it
