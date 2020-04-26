@@ -1,3 +1,6 @@
+# Python
+from __future__ import unicode_literals
+
 # Django
 from django.conf import settings
 from django.contrib import admin

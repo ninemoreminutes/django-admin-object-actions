@@ -1,9 +1,14 @@
-# -*- coding: UTF-8 -*-
+# -*- coding: utf-8 -*-
+
+# Python
+from __future__ import unicode_literals
+
+# Six
+import six
 
 # Django
 from django.contrib import admin
 from django.utils.timezone import now
-from django.utils.translation import ugettext_lazy as _
 
 # Django-Admin-Object-Actions
 from admin_object_actions.admin import ModelAdminObjectActionsMixin
@@ -11,6 +16,11 @@ from admin_object_actions.admin import ModelAdminObjectActionsMixin
 # Test App
 from .models import TestModel
 from .forms import AdminTestModelEnableForm, AdminTestModelDisableForm
+
+if six.PY3:
+    from django.utils.translation import gettext_lazy as _
+else:
+    from django.utils.translation import ugettext_lazy as _
 
 
 def do_fail(obj, form):
@@ -40,8 +50,8 @@ class TestModelAdmin(ModelAdminObjectActionsMixin, admin.ModelAdmin):
     object_actions = [
         {
             'slug': 'enable',
-            'verbose_name': _(u'enable ✓'),
-            'verbose_name_past': _(u'enabled ✓'),
+            'verbose_name': _('enable ✓'),
+            'verbose_name_past': _('enabled ✓'),
             'form_class': AdminTestModelEnableForm,
             'fields': ('name', 'enabled', 'confirm'),
             'readonly_fields': ('name', 'enabled',),

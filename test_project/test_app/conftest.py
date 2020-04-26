@@ -1,3 +1,6 @@
+# Python
+from __future__ import unicode_literals
+
 # py.test
 import pytest
 

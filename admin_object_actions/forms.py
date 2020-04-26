@@ -1,3 +1,6 @@
+# Python
+from __future__ import unicode_literals
+
 # Django
 from django import forms
 
@@ -6,10 +9,6 @@ class AdminObjectActionForm(forms.ModelForm):
 
     def do_object_action(self):
         raise NotImplementedError('do_object_action has not been implemented')
-        # obj.action_method(self.cleaned_data)
-        # if commit:
-        #     obj.save()
-        # return obj
 
     def save(self, commit=True):
         try:

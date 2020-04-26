@@ -1,5 +1,6 @@
+# -*- coding: utf-8 -*-
+
 # Python
-from __future__ import with_statement
 from __future__ import unicode_literals
 
 # Django
@@ -49,7 +50,7 @@ def test_object_action_does_not_exist(admin_client):
     assert response.redirect_chain[0][0] == admin_url
     message_list = list(response.context['messages'])
     assert message_list[0].level == messages.WARNING
-    assert 'doesn\'t exist' in message_list[0].message
+    assert 'doesn\'t exist' in message_list[0].message or 'doesn’t exist' in message_list[0].message
 
 
 def test_object_action_enable(admin_client, test_model_instance):

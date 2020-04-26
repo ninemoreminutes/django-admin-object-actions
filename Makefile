@@ -1,10 +1,10 @@
 .PHONY: core-requirements
 core-requirements:
-	pip install "pip>=9" "setuptools>=20" "pip-tools>=1.9"
+	pip install "pip>=20" setuptools "pip-tools>=5"
 
 .PHONY: update-pip-requirements
 update-pip-requirements: core-requirements
-	pip install -U "pip>=9" "setuptools>=20" "pip-tools>=1.9"
+	pip install -U "pip>=20" setuptools "pip-tools>=5"
 	pip-compile --upgrade requirements.in
 
 .PHONY: requirements

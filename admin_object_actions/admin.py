@@ -1,5 +1,10 @@
 # Python
+from __future__ import unicode_literals
 import functools
+import sys
+
+# Six
+import six
 
 # Django
 from django.contrib.admin import helpers
@@ -15,9 +20,12 @@ from django.http import HttpResponseRedirect
 from django.template.response import TemplateResponse
 from django.urls import reverse
 from django.utils.html import format_html, format_html_join
-from django.utils.http import is_safe_url
+try:
+    from django.utils.http import url_has_allowed_host_and_scheme
+except ImportError:
+    from django.utils.http import is_safe_url as url_has_allowed_host_and_scheme
 from django.utils.safestring import mark_safe
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 try:
     from django.urls import re_path
 except ImportError:
@@ -72,7 +80,7 @@ class ModelAdminObjectActionsMixin(object):
         form_class = modelform_factory(self.model, **defaults)
         callable_function = self.get_object_action_option(action, 'function', None)
         if callable_function:
-            if isinstance(callable_function, str):
+            if isinstance(callable_function, six.string_types):
                 callable_function = getattr(self, callable_function, getattr(obj, callable_function, None))
                 assert callable_function
             setattr(form_class, 'do_object_action_callable', callable_function)
@@ -119,7 +127,7 @@ class ModelAdminObjectActionsMixin(object):
         view_name = self.get_object_action_view_name(action)
         href = reverse('admin:{}'.format(view_name), args=[obj.pk], current_app=self.admin_site.name)
         next_url = request.get_full_path()
-        return format_html(u'<a class="button" href="{}?next={}">{}</a>', href, next_url, verbose_name)
+        return format_html('<a class="button" href="{}?next={}">{}</a>', href, next_url, verbose_name)
 
     def display_object_actions(self, obj=None, list_only=False, detail_only=False):
         empty_value_display = self.get_empty_value_display()
@@ -136,7 +144,7 @@ class ModelAdminObjectActionsMixin(object):
             if not self.has_object_action_permission(request, obj, action):
                 continue
             actions_display.append(self.get_object_action_display(request, obj, action))
-        return format_html_join(mark_safe('&nbsp;'), u'{}', [(x,) for x in actions_display])
+        return format_html_join(mark_safe('&nbsp;'), '{}', [(x,) for x in actions_display])
     display_object_actions.short_description = _('Object Actions')
 
     def display_object_actions_list(self, obj=None):
@@ -153,7 +161,7 @@ class ModelAdminObjectActionsMixin(object):
         for object_action in self.get_object_actions():
             action = object_action['slug']
             view = self.get_object_action_option(action, 'view', self.object_action_view)
-            if isinstance(view, str):
+            if isinstance(view, six.string_types):
                 view = getattr(self, view)
             wrapped_view = functools.partial(view, action=action)
             wrapped_view = functools.update_wrapper(wrapped_view, view)
@@ -170,7 +178,7 @@ class ModelAdminObjectActionsMixin(object):
         opts = self.model._meta
         preserved_filters = self.get_preserved_filters(request)
         url = request.POST.get(redirect_field_name, request.GET.get(redirect_field_name, ''))
-        if not is_safe_url(url=url, allowed_hosts={request.get_host()}, require_https=request.is_secure()):
+        if not url_has_allowed_host_and_scheme(url=url, allowed_hosts={request.get_host()}, require_https=request.is_secure()):
             url = ''
         if not url:
             url = reverse('admin:{}_{}_changelist'.format(opts.app_label, opts.model_name), current_app=self.admin_site.name)
@@ -180,7 +188,7 @@ class ModelAdminObjectActionsMixin(object):
     def construct_object_action_message(self, request, obj, form, action):
         verbose_name = self.get_object_action_verbose_name(request, obj, action)
         verbose_name_past = self.get_object_action_option(action, 'verbose_name_past', None) or verbose_name
-        return u'{}.'.format(verbose_name_past[0].upper() + verbose_name_past[1:])
+        return '{}.'.format(verbose_name_past[0].upper() + verbose_name_past[1:])
 
     def log_object_action(self, request, obj, message, action):
         return self.log_change(request, obj, message)
@@ -261,8 +269,9 @@ class ModelAdminObjectActionsMixin(object):
         media = self.media + admin_form.media
 
         verbose_name = self.get_object_action_verbose_name(request, obj, action)
+        print(repr(verbose_name))
         verbose_name_title = self.get_object_action_verbose_name_title(request, obj, action)
-        title = u'{} {}'.format(verbose_name_title[0].upper() + verbose_name_title[1:], opts.verbose_name)
+        title = '{} {}'.format(verbose_name_title[0].upper() + verbose_name_title[1:], opts.verbose_name)
         return dict(
             self.admin_site.each_context(request),
             title=title,
