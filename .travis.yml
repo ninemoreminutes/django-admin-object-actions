@@ -12,3 +12,4 @@ addons:
     packages:
       - python3.4
       - python3.6
+      - python3.8
