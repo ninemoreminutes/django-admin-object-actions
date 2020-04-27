@@ -14,7 +14,7 @@ from django.utils.timezone import now
 from admin_object_actions.admin import ModelAdminObjectActionsMixin
 
 # Test App
-from .models import TestModel
+from .models import TestModel, TestRelatedModel
 from .forms import AdminTestModelEnableForm, AdminTestModelDisableForm
 
 if six.PY3:
@@ -25,6 +25,29 @@ else:
 
 def do_fail(obj, form):
     raise NotImplementedError('this action is not yet implemented')
+
+
+class TestRelatedModelInline(ModelAdminObjectActionsMixin, admin.TabularInline):
+
+    model = TestRelatedModel
+    extra = 0
+    fields = (
+        'comment',
+        'display_object_actions_detail',
+    )
+    readonly_fields = (
+        'display_object_actions_detail',
+    )
+    object_actions = [
+        {
+            'slug': 'review',
+            'verbose_name': _('review'),
+            'verbose_name_past': _('reviewed'),
+            'form_method': 'GET',
+            'function': 'do_review',
+            #'list_only': True,
+        },
+    ]
 
 
 @admin.register(TestModel)
@@ -47,6 +70,9 @@ class TestModelAdmin(ModelAdminObjectActionsMixin, admin.ModelAdmin):
         'refreshed',
         'display_object_actions_detail',
     )
+    inlines = [
+        TestRelatedModelInline,
+    ]
     object_actions = [
         {
             'slug': 'enable',
