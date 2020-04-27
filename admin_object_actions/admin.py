@@ -1,7 +1,6 @@
 # Python
 from __future__ import unicode_literals
 import functools
-import sys
 
 # Six
 import six
@@ -71,9 +70,12 @@ class ModelAdminObjectActionsMixin(object):
         form_class = self.get_object_action_option(action, 'form_class')
         if form_class is not None:
             return form_class
+        fields = self.get_object_action_option(action, 'fields') or ()
+        readonly_fields = self.get_object_action_readonly_fields(request, obj, action)
+        fields = tuple(f for f in fields if f not in readonly_fields)
         defaults = {
             'form': self.object_action_form_class,
-            'fields': (),
+            'fields': fields,
             'exclude': None,
             'formfield_callback': functools.partial(self.formfield_for_dbfield, request=request),
         }
@@ -269,7 +271,6 @@ class ModelAdminObjectActionsMixin(object):
         media = self.media + admin_form.media
 
         verbose_name = self.get_object_action_verbose_name(request, obj, action)
-        print(repr(verbose_name))
         verbose_name_title = self.get_object_action_verbose_name_title(request, obj, action)
         title = '{} {}'.format(verbose_name_title[0].upper() + verbose_name_title[1:], opts.verbose_name)
         return dict(

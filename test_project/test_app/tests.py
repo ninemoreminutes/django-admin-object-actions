@@ -135,6 +135,29 @@ def test_object_action_check(admin_client, test_model_instance):
     assert LogEntry.objects.count() == 0
 
 
+def test_object_action_update(admin_client, test_model_instance):
+    assert LogEntry.objects.count() == 0
+    original_name = test_model_instance.name
+    changelist_url = reverse('admin:test_app_testmodel_changelist')
+    update_url = reverse('admin:test_app_testmodel_update', args=[test_model_instance.pk])
+    response = admin_client.get(update_url, follow=True)
+    assert response.status_code == 200
+    assert not response.redirect_chain
+    test_model_instance.refresh_from_db()
+    assert test_model_instance.name == original_name
+    response = admin_client.post(update_url, {'name': '{} v2'.format(original_name)}, follow=True)
+    assert response.status_code == 200
+    assert response.redirect_chain[0][0] == changelist_url
+    message_list = list(response.context['messages'])
+    assert message_list[0].level == messages.SUCCESS
+    assert 'updated' in message_list[0].message
+    test_model_instance.refresh_from_db()
+    assert test_model_instance.name != original_name
+    assert LogEntry.objects.count() == 1
+    log_entry = LogEntry.objects.first()
+    assert 'updated' in log_entry.change_message.lower()
+
+
 def test_object_action_fail(admin_client, test_model_instance):
     assert LogEntry.objects.count() == 0
     assert not test_model_instance.refreshed

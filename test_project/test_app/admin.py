@@ -85,6 +85,14 @@ class TestModelAdmin(ModelAdminObjectActionsMixin, admin.ModelAdmin):
             'detail_only': True,
         },
         {
+            'slug': 'update',
+            'verbose_name': _('update'),
+            'verbose_name_past': _('updated'),
+            'fields': ('name', 'enabled'),
+            'readonly_fields': ('enabled',),
+            'function': 'do_update',
+        },
+        {
             'slug': 'fail',
             'verbose_name': _('fail'),
             'verbose_name_past': _('failed'),
@@ -105,6 +113,10 @@ class TestModelAdmin(ModelAdminObjectActionsMixin, admin.ModelAdmin):
     def do_refresh(self, obj, form):
         obj.refreshed = now()
         obj.save(update_fields=['refreshed'])
+
+    def do_update(self, obj, form):
+        obj.name = form.cleaned_data['name']
+        obj.save(update_fields=['name'])
 
     def check_view(self, request, object_id, form_url='', extra_context=None, action=None):
         return self.object_action_view(request, object_id, form_url, extra_context, action)
