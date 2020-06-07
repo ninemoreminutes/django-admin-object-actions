@@ -5,7 +5,7 @@ django
 django-crum
 django-debug-toolbar
 django-extensions
-flake8==3.7.8
+flake8
 ipython
 pip-tools
 pycodestyle
