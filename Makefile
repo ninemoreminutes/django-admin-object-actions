@@ -2,8 +2,8 @@
 core-requirements:
 	pip install "pip>=20" setuptools "pip-tools>=5"
 
-.PHONY: update-pip-requirements
-update-pip-requirements: core-requirements
+.PHONY: update-requirements
+update-requirements: core-requirements
 	pip install -U "pip>=20" setuptools "pip-tools>=5"
 	pip-compile --upgrade requirements.in
 
