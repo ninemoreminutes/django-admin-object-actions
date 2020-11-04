@@ -1,15 +1,11 @@
+---
+
 language: python
-python: '3.7'
-sudo: required
-dist: xenial
+python:
+  - "3.5"
+  - "3.6"
+  - "3.7"
+  - "3.8"
+before_install: pip install -U pip
 install: make requirements
 script: make tox
-
-addons:
-  apt:
-    sources:
-      - sourceline: ppa:deadsnakes/ppa
-    packages:
-      - python3.6
-      - python3.8
-      - python3.8-distutils

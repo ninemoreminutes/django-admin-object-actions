@@ -17,5 +17,6 @@ pytest-runner
 six
 sphinx
 tox
+tox-travis
 twine
 wheel
