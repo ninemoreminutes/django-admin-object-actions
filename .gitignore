@@ -9,3 +9,4 @@ reports
 .pytest_cache
 .tox
 *.sqlite3
+.eggs
