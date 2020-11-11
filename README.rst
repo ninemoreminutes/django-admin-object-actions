@@ -27,8 +27,8 @@ It is tested against:
  * Django master/3.2 (Python 3.6, 3.7, 3.8 and 3.9)
 
 
-.. |Build Status| image:: http://img.shields.io/travis/ninemoreminutes/django-admin-object-actions.svg
-   :target: https://travis-ci.org/ninemoreminutes/django-admin-object-actions
+.. |Build Status| image:: https://img.shields.io/github/workflow/status/ninemoreminutes/django-admin-object-actions/test
+   :target: https://github.com/ninemoreminutes/django-admin-object-actions/actions?query=workflow%3Atest
 .. |PyPI Version| image:: https://img.shields.io/pypi/v/django-admin-object-actions.svg
    :target: https://pypi.org/project/django-admin-object-actions/
 .. |PyPI License| image:: https://img.shields.io/pypi/l/django-admin-object-actions.svg
