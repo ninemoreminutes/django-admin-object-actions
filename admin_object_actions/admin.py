@@ -187,15 +187,12 @@ class ModelAdminObjectActionsMixin(object):
         url = add_preserved_filters({'preserved_filters': preserved_filters, 'opts': opts}, url)
         return url
 
-    def construct_object_action_message(self, request, obj, form, action):
+    def construct_object_action_log_message(self, request, obj, form, action):
         verbose_name = self.get_object_action_verbose_name(request, obj, action)
         verbose_name_past = self.get_object_action_option(action, 'verbose_name_past', None) or verbose_name
         return '{}.'.format(verbose_name_past[0].upper() + verbose_name_past[1:])
 
-    def log_object_action(self, request, obj, message, action):
-        return self.log_change(request, obj, message)
-
-    def response_object_action(self, request, obj, form, action, exception=None):
+    def construct_object_action_message(self, request, obj, form, action, exception=None):
         opts = self.model._meta
         verbose_name_past = self.get_object_action_option(action, 'verbose_name_past', _('acted upon'))
         msg_dict = {
@@ -205,16 +202,24 @@ class ModelAdminObjectActionsMixin(object):
             'exception': exception,
         }
         if exception:
-            msg = format_html(
+            return format_html(
                 _('The {name} "{obj}" was not {verbose_name_past}: {exception}.'),
                 **msg_dict
             )
-            self.message_user(request, msg, messages.ERROR)
         else:
-            msg = format_html(
+            return format_html(
                 _('The {name} "{obj}" was {verbose_name_past} successfully.'),
                 **msg_dict
             )
+
+    def log_object_action(self, request, obj, message, action):
+        return self.log_change(request, obj, message)
+
+    def response_object_action(self, request, obj, form, action, exception=None):
+        msg = self.construct_object_action_message(request, obj, form, action, exception)
+        if exception:
+            self.message_user(request, msg, messages.ERROR)
+        else:
             self.message_user(request, msg, messages.SUCCESS)
         redirect_url = self.get_object_action_redirect_url(request, obj, action)
         return HttpResponseRedirect(redirect_url)
@@ -248,7 +253,7 @@ class ModelAdminObjectActionsMixin(object):
                 except Exception as e:
                     return self.response_object_action(request, obj, form, action, exception=e)
                 else:
-                    msg = self.construct_object_action_message(request, obj, form, action)
+                    msg = self.construct_object_action_log_message(request, obj, form, action)
                     self.log_object_action(request, new_object, msg, action)
                     return self.response_object_action(request, new_object, form, action)
         else:
