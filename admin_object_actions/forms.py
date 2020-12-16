@@ -13,9 +13,9 @@ class AdminObjectActionForm(forms.ModelForm):
     def save(self, commit=True):
         try:
             if hasattr(self, 'do_object_action_callable'):
-                self.do_object_action_callable(self.instance, self)
+                self.object_action_result = self.do_object_action_callable(self.instance, self)
             else:
-                self.do_object_action()
+                self.object_action_result = self.do_object_action()
         except Exception as e:
             self.add_error(None, str(e))
             raise
