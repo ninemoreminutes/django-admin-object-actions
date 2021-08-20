@@ -327,3 +327,32 @@ class ModelAdminObjectActionsMixin(object):
             'admin/{}/object_action_form.html'.format(opts.app_label),
             'admin/object_action_form.html',
         ], context)
+
+    def has_display_object_actions_list(self):
+        return next((True for oa in self.get_object_actions() if not oa.get('detail_only')), False)
+
+    def has_display_object_actions_detail(self):
+        return next((True for oa in self.get_object_actions() if not oa.get('list_only')), False)
+
+    def get_list_display(self, request):
+        list_display = super().get_list_display(request)
+        if self.has_display_object_actions_list():
+            list_display = list(list_display) + ['display_object_actions_list']
+        return list_display
+
+    def get_readonly_fields(self, request, obj=None):
+        readonly_fields = super().get_readonly_fields(request, obj)
+        if self.has_display_object_actions_detail():
+            readonly_fields = list(readonly_fields) + ['display_object_actions_detail']
+        return readonly_fields
+
+    def get_fieldsets(self, request, obj=None):
+        if self.has_display_object_actions_detail():
+            fields = [f for f in self.get_fields(request, obj) if f != 'display_object_actions_detail']
+            fieldsets = self.fieldsets if self.fieldsets else [(None, {'fields': fields})]
+            return list(fieldsets) + [
+                (self.display_object_actions_detail.short_description, {
+                    'fields': ('display_object_actions_detail', )
+                }),
+            ]
+        return super().get_fieldsets(request, obj)
