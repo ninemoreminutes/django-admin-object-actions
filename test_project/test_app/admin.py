@@ -34,18 +34,15 @@ class TestModelAdmin(ModelAdminObjectActionsMixin, admin.ModelAdmin):
         'name',
         'enabled',
         'refreshed',
-        'display_object_actions_list',
     )
     fields = (
         'name',
         'enabled',
         'refreshed',
-        'display_object_actions_detail',
     )
     readonly_fields = (
         'enabled',
         'refreshed',
-        'display_object_actions_detail',
     )
     object_actions = [
         {

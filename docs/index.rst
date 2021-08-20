@@ -27,7 +27,7 @@ It is tested against:
  * Django 3.1 (Python 3.6, 3.7, 3.8 and 3.9)
  * Django 3.2 pre-release (Python 3.6, 3.7, 3.8 and 3.9)
  * Django main/4.0 (Python 3.8 and 3.9)
- 
+
 Installation
 ------------
 
@@ -49,36 +49,17 @@ Usage
 -----
 
 Ensure your ``ModelAdmin`` class inherits from the
-``ModelAdminObjectActionsMixin``. It should also include ``display_object_actions_list``
-in the ``list_display`` attribute and ``display_object_actions_detail`` in the
-``fields`` and ``readonly_fields`` attributes to ensure the object action buttons
-show up in the change list and change views, respectively::
+``ModelAdminObjectActionsMixin``.::
 
     # myapp/admin.py
     from django.contrib import admin
     from admin_object_actions.admin import ModelAdminObjectActionsMixin
     from .models import MyModel
-    
+
     @admin.register(MyModel)
     class MyModelAdmin(ModelAdminObjectActionsMixin, admin.ModelAdmin):
+        ...  # That's it
 
-        list_display = (
-            ...,  # your existing list display fields
-            'display_object_actions_list',
-        )
-
-        fields = (
-            ...,  # your existing detail display fields
-            'display_object_actions_detail',
-        )
-        
-        readonly_fields = (
-            ...,  # your existing read-only fields
-            'display_object_actions_detail',
-        )
-
-If using ``fieldsets`` instead of ``fields``, add ``display_object_actions_detail``
-to the desired fieldset as you would with any other field.
 
 Create custom subclasses of ``AdminObjectActionForm`` for actions requiring
 additional input or confirmation and implement the ``do_object_action`` method::
@@ -89,7 +70,7 @@ additional input or confirmation and implement the ``do_object_action`` method::
     from .models import MyModel
 
     class MyActionForm(AdminObjectActionForm):
-    
+
         confirm = forms.BooleanField()
 
         class Meta:
@@ -165,7 +146,7 @@ may define additional fields customize the action's behavior:
     List of readonly fields to display in the custom admin form.
 
   ``fields``
-    List of fields to display in the custom action form. 
+    List of fields to display in the custom action form.
 
   ``fieldsets``
     Custom fieldsets to display for the object action form. Defaults to a single
@@ -175,7 +156,7 @@ may define additional fields customize the action's behavior:
     Custom permission required to display or execute this object action. Default
     is ``change``. If defined, a ``has_<permission>_permission`` method on the
     ``ModelAdmin`` class will be called to check whether the action is allowed.
-    
+
   ``form_template``
     Custom form template used to render the object action form. Default is
     ``admin/object_action_form.html``.
